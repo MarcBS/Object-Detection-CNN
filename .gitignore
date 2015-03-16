@@ -1,1 +1,2 @@
-trained_CNN/*
+trained_CNN/*.caffemodel
+trained_CNN/*.solverstate

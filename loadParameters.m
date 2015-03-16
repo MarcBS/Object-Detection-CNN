@@ -2,7 +2,7 @@
 %% Parameters
 ODCNN_params.caffe_path = '/usr/local/caffe-dev/matlab/caffe';
 ODCNN_params.use_gpu = true;
-ODCNN_params.model_def_file = '/usr/local/caffe-dev/models/objDetectCNN/train_val_finetunning_test.prototxt';
+ODCNN_params.model_def_file = '/media/lifelogging/HDD_2TB/Object-Detection-CNN/trained_CNN/train_val_finetunning_test.prototxt';
 ODCNN_params.trained_net_file = '/media/lifelogging/HDD_2TB/Object-Detection-CNN/trained_CNN/objDetectCNN_finetunning_v2_iter_16000.caffemodel';
 
 ODCNN_params.batch_size = 50;
