@@ -1,4 +1,4 @@
-function [ obj_windows, scales ] = mergeWindows( maps, ODCNN_params, img )
+function [ obj_windows, scales ] = mergeWindows( maps, ODCNN_params )
 %MERGEWINDOWS It merges the detected object windows from each different
 %   scale if their IoU is big enough.
 
@@ -42,11 +42,19 @@ function [ obj_windows, scales ] = mergeWindows( maps, ODCNN_params, img )
                 end
             end
 
-            % Keep merging while there are enough similar windows
-            nW = Inf;
-            while(nW > size(W,1))
-                nW = size(W,1);
-                W = mergeBestIOU(W, ODCNN_params);
+            if(strcmp(ODCNN_params.mergeType, 'IoU'))
+                % Keep merging while there are enough similar windows
+                nW = Inf;
+                while(nW > size(W,1))
+                    nW = size(W,1);
+                    W = mergeBestIOU(W, ODCNN_params);
+                end
+            elseif(strcmp(ODCNN_params.mergeType, 'NMS'))
+                W = nms(W, ODCNN_params.mergeThreshold);
+            elseif(strcmp(ODCNN_params.mergeType, 'MS'))
+                this_scale = regexp(scales{i}, '_', 'split');
+                this_scale = [str2num(this_scale{1}) str2num(this_scale{2})];
+                W = matchScoring(W, ODCNN_params.mergeThreshold, this_scale);
             end
             obj_windows{i} = W;
         end
@@ -74,13 +82,18 @@ function [ obj_windows, scales ] = mergeWindows( maps, ODCNN_params, img )
             end
         end
 
-        % Keep merging while there are enough similar windows
-        nW = Inf;
-        while(nW > size(W,1))
-            nW = size(W,1);
-            W = mergeBestIOU(W, ODCNN_params);
+        if(strcmp(ODCNN_params.mergeType, 'IoU'))
+            % Keep merging while there are enough similar windows
+            nW = Inf;
+            while(nW > size(W,1))
+                nW = size(W,1);
+                W = mergeBestIOU(W, ODCNN_params);
+            end
+        elseif(strcmp(ODCNN_params.mergeType, 'NMS'))
+            W = nms(W, ODCNN_params.mergeThreshold);
+        elseif(strcmp(ODCNN_params.mergeType, 'MS'))
+            W = matchScoring(W, ODCNN_params.mergeThreshold, bigger_scale);   
         end
-
         obj_windows{bigger_scale_ind} = W;
 
     end

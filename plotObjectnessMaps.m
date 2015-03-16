@@ -17,7 +17,7 @@ load([path_maps '/' im_name '_maps.mat']); % maps
 % load([path_maps '/' im_name '_objects.mat']); % objects
 
 %% Generate objects list
-[objects_list, scales] = mergeWindows(maps, ODCNN_params, img);
+[objects_list, scales] = mergeWindows(maps, ODCNN_params);
 objects.list = objects_list;
 objects.scales = scales;
 

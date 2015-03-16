@@ -5,8 +5,8 @@ function [ W ] = mergeBestIOU( W, ODCNN_params )
     [v, p] = max(d);
     [v2, p2] = max(v);
 
-    % Only keep merge if their IoU >= ODCNN_params.mergeIoU
-    if(v2 >= ODCNN_params.mergeIoU)
+    % Only keep merge if their IoU >= ODCNN_params.mergeThreshold
+    if(v2 >= ODCNN_params.mergeThreshold)
         w1 = W(p(p2),:);
         w2 = W(p2,:);
 

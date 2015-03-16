@@ -1,0 +1,36 @@
+function [ windows ] = matchScoring( windows, threshold, img_size )
+%MATCHSCORING This function applies a windows merging algorithm inspired 
+%   by: Pierre Sermanet et. al "OverFeat: Integrated recognition, 
+%       Localization and Detection using Convolutional Networks."
+
+    max_dist = sqrt(img_size(1)^2 + img_size(2)^2);
+    max_intersect = img_size(1) * img_size(2);
+    
+    % Add additional information to the windows (max distance and max
+    % intersection area)
+    nWindows = size(windows,1);
+    win_aux = [windows repmat(max_dist, nWindows, 1) repmat(max_intersect, nWindows, 1)];
+    
+    % Get windows with lower match score (most similar)
+    d = squareform(pdist(win_aux, @matchScore));
+    [v, p] = max(d);
+    [v2, p2] = max(v);
+    
+    % Only keep merging if their Match_Score <= ODCNN_params.mergeThreshold
+    if(v2 >= ODCNN_params.mergeThreshold)
+        w1 = W(p(p2),:);
+        w2 = W(p2,:);
+
+        % Create merged window
+        w_new = mean([w1; w2]);
+
+        % Remove old windows
+        W(p(p2),:) = [];
+        W(p2,:) = [];
+
+        % Insert merged window
+        W(end+1,:) = w_new;
+    end
+
+end
+

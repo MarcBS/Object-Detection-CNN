@@ -4,9 +4,9 @@
 
 % Path to the .txt file with the training output
 % file_path = '../Training_Results/output_training_ObjDetection_v1.txt';
-% file_path = '../Training_Results/output_training_ObjDetection_finetunning_v2.txt';
-% file_path = '../../MamoCNN/Training_Results/output_training_MammoCNN_v2.txt';
-file_path = '../../MamoCNN/Training_Results/output_training_lr0-0000001.txt';
+file_path = '../Training_Results/output_training_ObjDetection_finetunning_v2.txt';
+% file_path = '../../../MamoCNN/Training_Results/output_training_MammoCNN_v2.txt';
+% file_path = '../../../MamoCNN/Training_Results/output_training_lr0-000000001.txt';
 
 % Only pick 1 sample for each N
 % Nsubsample_loss = 50;
