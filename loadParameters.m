@@ -24,16 +24,16 @@ ODCNN_params.scales = [1 0.85 0.71 0.51 0.36 0.21];
 %% Paths
 path_maps = 'Maps';
 
-path_images = '/media/lifelogging/Shared SSD/Object Discovery Data/Video Summarization Project Data Sets/MSRC/JPEGImages';
-% path_images = '/Volumes/SHARED HD/Video Summarization Project Data Sets/MSRC/JPEGImages';
+% path_images = '/media/lifelogging/Shared SSD/Object Discovery Data/Video Summarization Project Data Sets/MSRC/JPEGImages';
+path_images = '/Volumes/SHARED HD/Video Summarization Project Data Sets/MSRC/JPEGImages';
 
 format = '.JPG';
 
 %% Parameters for runODCNN
 train_val_split = 'Data_Preparation/train_val_split.mat';
 
-% path_objects = '/Volumes/SHARED HD/Video Summarization Objects/Features';
-path_objects = '/media/lifelogging/HDD_2TB/Video Summarization Objects/Features';
+path_objects = '/Volumes/SHARED HD/Video Summarization Objects/Features';
+% path_objects = '/media/lifelogging/HDD_2TB/Video Summarization Objects/Features';
 
 % list_paths_images = {'/Volumes/SHARED HD/Video Summarization Project Data Sets/MSRC/JPEGImages', ...
 %     '/Volumes/SHARED HD/Video Summarization Project Data Sets/PASCAL_12/VOCdevkit/VOC2012/JPEGImages'};

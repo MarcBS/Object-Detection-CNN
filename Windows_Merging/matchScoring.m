@@ -17,7 +17,7 @@ function [ windows ] = matchScoring( windows, threshold, img_size )
     [v, p] = min(d);
     [v2, p2] = min(v);
     
-    % Only keep merging if their Match_Score <= ODCNN_params.mergeThreshold
+    % Only keep merging if their Match_Score <= threshold
     while(size(win_aux,1) > 1 && v2 <= threshold)
         w1 = win_aux(p(p2),:);
         w2 = win_aux(p2,:);

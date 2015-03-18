@@ -46,7 +46,7 @@ function [ obj_windows, scales ] = mergeWindowsCV( maps, ODCNN_params, params )
             % For each parameter in the Cross-Validation
             initW = W;
             for nParams = 1:length(params)
-                if(nParams > 1 && strcmp(ODCNN_params.mergeType, 'IoU'))
+                if(nParams > 1 && ~strcmp(ODCNN_params.mergeType, 'NMS'))
                     W = obj_windows{nParams-1}{i};
                 else
                     W = initW;
@@ -98,7 +98,7 @@ function [ obj_windows, scales ] = mergeWindowsCV( maps, ODCNN_params, params )
         % For each parameter in the Cross-Validation
         initW = W;
         for nParams = 1:length(params)
-            if(nParams > 1 && strcmp(ODCNN_params.mergeType, 'IoU'))
+            if(nParams > 1 && ~strcmp(ODCNN_params.mergeType, 'NMS'))
                 W = obj_windows{nParams-1}{bigger_scale_ind};
             else
                 W = initW;

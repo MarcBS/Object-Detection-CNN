@@ -10,7 +10,7 @@ mergeScales_values = {true, false};
 % mergeType_values)
 mergeThreshold_values = {{0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2}, ...
                         {0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2}, ...
-                        {0.55, 0.5, 0.45, 0.4, 0.3}};
+                        {0.3, 0.4, 0.45, 0.5, 0.55}};
 
 %% Load general Parameters
 cd ..
