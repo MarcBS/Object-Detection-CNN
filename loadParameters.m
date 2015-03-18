@@ -43,7 +43,7 @@ list_paths_images = {'/media/lifelogging/Shared SSD/Object Discovery Data/Video 
 % PASCAL 1, MSRC 1.25
 prop_res = {1.25, 1};
 
-objects_folders = {'Data MSRC Ferrari', 'Data PASCAL_12 BING'};
+objects_folders = {'Data MSRC Ferrari', 'Data PASCAL_12 Ferrari'};
 
 
     

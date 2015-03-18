@@ -1,4 +1,4 @@
-name: "CaffeNet"
+name: "ODCNN"
 input: "data"
 input_dim: 50
 input_dim: 3
