@@ -5,7 +5,7 @@ loadParameters;
 load(train_val_split); % images_list
 val_split = images_list{2};
 
-%% For each images path
+%% For each image
 nImages = size(val_split,1);
 times = zeros(nImages, 1);
 count_imgs = 1;

@@ -10,9 +10,9 @@ ODCNN_params.parallel = true; % use parallel computation or not
 
 % 'IoU': intersection over union, 'NMS': non-maximal suppression, 'MS': match score
 ODCNN_params.mergeType = 'MS';
-ODCNN_params.minObjVal = 0.5; % minimum objectness value threshold to consider a positive window as an object
+ODCNN_params.minObjVal = 0.8; % minimum objectness value threshold to consider a positive window as an object
 ODCNN_params.mergeScales = true; % merge windows from different scales or not?
-ODCNN_params.mergeThreshold = 0.52; % threshold used for any of the merging methods
+ODCNN_params.mergeThreshold = 0.1; % threshold used for any of the merging methods
 
 
 ODCNN_params.stride = 24; % pixel separation between each processed patch
@@ -24,8 +24,8 @@ ODCNN_params.scales = [1 0.85 0.71 0.51 0.36 0.21];
 %% Paths
 path_maps = 'Maps';
 
-% path_images = '/media/lifelogging/Shared SSD/Object Discovery Data/Video Summarization Project Data Sets/MSRC/JPEGImages';
-path_images = '/Volumes/SHARED HD/Video Summarization Project Data Sets/MSRC/JPEGImages';
+path_images = '/media/lifelogging/Shared SSD/Object Discovery Data/Video Summarization Project Data Sets/MSRC/JPEGImages';
+% path_images = '/Volumes/SHARED HD/Video Summarization Project Data Sets/MSRC/JPEGImages';
 
 format = '.JPG';
 
@@ -47,4 +47,4 @@ objects_folders = {'Data MSRC Ferrari', 'Data PASCAL_12 Ferrari'};
 
 
     
-addpath('Utils;Evaluate_Results;Evaluate_Results/NMS;Main_Run');
+addpath('Utils;Windows_Merging;Windows_Merging/NMS;Main_Run;Results_Evaluation');

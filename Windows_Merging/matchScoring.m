@@ -39,6 +39,8 @@ function [ windows ] = matchScoring( windows, threshold, img_size )
         [v2, p2] = min(v);
     end
 
-    windows = win_aux(:,1:4);
+    if(~isempty(win_aux))
+        windows = win_aux(:,1:4);
+    end
 end
 
