@@ -5,11 +5,11 @@
 %% Specific Cross-Validation parameters
 mergeType_values = {'IoU', 'NMS', 'MS'};
 minObjVal_values = {0.6, 0.7, 0.8, 0.9};
-mergeScales_values = {true, false};
+mergeScales_values = {true};
 % Thresholds used for each of the methods (in the same order as
 % mergeType_values)
-mergeThreshold_values = {{0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2}, ...
-                        {0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2}, ...
+mergeThreshold_values = {{0.8, 0.65, 0.5, 0.35, 0.2}, ...
+                        {0.8, 0.65, 0.5, 0.35, 0.2}, ...
                         {0.3, 0.4, 0.45, 0.5, 0.55}};
 
 %% Load general Parameters
