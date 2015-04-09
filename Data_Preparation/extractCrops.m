@@ -29,8 +29,8 @@ CNN_input_img = 256;
 
 
 %% Loop for train and test data
-% % % % % % % % % % % % % % % % for i_set = 1:2
-for i_set = 2
+for i_set = 1:2
+% for i_set = 2
     disp(['Start extracting crops from ' images_crop_lists_results{i_set}]);
     path_crop = path_crop_images{i_set};
     
@@ -81,9 +81,9 @@ for i_set = 2
 
         % Save cropped image
         crop_name = line{2};
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        crop_name = [line{4} '__' crop_name];
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%         crop_name = [line{4} '__' crop_name];
+%         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         imwrite(crop_image, [path_store '/' crop_name]);
 
         % Show progress
@@ -94,11 +94,11 @@ for i_set = 2
         % Get next line
         prev_file_name = file_name;
         prev_dataset_name = dataset_name;
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        for out = 1:100
-        line = fgetl(f);
-        end
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%         for out = 1:100
+%         line = fgetl(f);
+%         end
+%         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         count_lines = count_lines+1;
     end
     

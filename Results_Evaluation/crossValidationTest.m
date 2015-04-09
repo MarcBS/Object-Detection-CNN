@@ -4,7 +4,7 @@
 
 %% Specific Cross-Validation parameters
 mergeType_values = {'IoU', 'NMS', 'MS'};
-minObjVal_values = {0.6, 0.7, 0.8, 0.9};
+minObjVal_values = {0.65, 0.75, 0.85};
 mergeScales_values = {true};
 % Thresholds used for each of the methods (in the same order as
 % mergeType_values)
@@ -40,12 +40,12 @@ for img_ind = val_split'
     tic
     
     % Store ground truth information
-    objectsCV.ground_truth = objects(img_ind(2)).ground_truth;
-    objectsCV.imgName = objects(img_ind(2)).imgName;
-    objectsCV.folder = objects(img_ind(2)).folder;
+    objectsCV(count_imgs).ground_truth = objects(img_ind(2)).ground_truth;
+    objectsCV(count_imgs).imgName = objects(img_ind(2)).imgName;
+    objectsCV(count_imgs).folder = objects(img_ind(2)).folder;
     
     % Prepare tests parameters and resulting object candidates
-    objectsCV.test = struct('mergeType', [], 'minObjVal', [], 'mergeScales', [], 'mergeThreshold', [], 'objects', []);
+    objectsCV(count_imgs).test = struct('mergeType', [], 'minObjVal', [], 'mergeScales', [], 'mergeThreshold', [], 'objects', []);
     
     % Load maps results
     load([path_maps '/' num2str(img_ind(1)) '_' objects(img_ind(2)).imgName '_maps.mat']); % maps
@@ -86,10 +86,10 @@ for img_ind = val_split'
                     ODCNN_params.mergeThreshold = mergeThreshold{1};
                     
                     % Store information for this parameter combination
-                    objectsCV.test(count_tests).mergeType = ODCNN_params.mergeType;
-                    objectsCV.test(count_tests).minObjVal = ODCNN_params.minObjVal;
-                    objectsCV.test(count_tests).mergeScales = ODCNN_params.mergeScales;
-                    objectsCV.test(count_tests).mergeThreshold = ODCNN_params.mergeThreshold;
+                    objectsCV(count_imgs).test(count_tests).mergeType = ODCNN_params.mergeType;
+                    objectsCV(count_imgs).test(count_tests).minObjVal = ODCNN_params.minObjVal;
+                    objectsCV(count_imgs).test(count_tests).mergeScales = ODCNN_params.mergeScales;
+                    objectsCV(count_imgs).test(count_tests).mergeThreshold = ODCNN_params.mergeThreshold;
                     
                     % Apply parameters and extract objects
                     this_objects.list = this_all_objects.list{count_threshold};
@@ -105,10 +105,10 @@ for img_ind = val_split'
                         ratio = maxScale_val(2)/s(2);
                         for o = objs'
                             o = o*ratio;
-                            objectsCV.test(count_tests).objects(count_objects).ULx = o(1);
-                            objectsCV.test(count_tests).objects(count_objects).ULy = o(2);
-                            objectsCV.test(count_tests).objects(count_objects).BRx = o(3);
-                            objectsCV.test(count_tests).objects(count_objects).BRy = o(4);
+                            objectsCV(count_imgs).test(count_tests).objects(count_objects).ULx = o(1);
+                            objectsCV(count_imgs).test(count_tests).objects(count_objects).ULy = o(2);
+                            objectsCV(count_imgs).test(count_tests).objects(count_objects).BRx = o(3);
+                            objectsCV(count_imgs).test(count_tests).objects(count_objects).BRy = o(4);
                             count_objects = count_objects+1;
                         end
                     end
