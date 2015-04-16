@@ -6,8 +6,8 @@ classes = [0, 1]; % [No Object, Object]
 % path_objects = '/Volumes/SHARED HD/Video Summarization Objects/Features';
 path_objects = '/media/lifelogging/HDD_2TB/Video Summarization Objects/Features';
 objects_folders = {...
-    {'Data MSRC BING', 'Data MSRC Ferrari', 'Data MSRC MCG', 'Data MSRC SelectiveSearch'}, ...
-    {'Data PASCAL_12 BING', 'Data PASCAL_12 Ferrari', 'Data PASCAL_12 MCG', 'Data PASCAL_12 SelectiveSearch'}};%, ...
+    {'Data MSRC Ferrari', 'Data MSRC BING', 'Data MSRC MCG', 'Data MSRC SelectiveSearch'}, ...
+    {'Data PASCAL_12 Ferrari', 'Data PASCAL_12 BING', 'Data PASCAL_12 MCG', 'Data PASCAL_12 SelectiveSearch'}};%, ...
     % {'Data Narrative_Dataset BING', 'Data Narrative_Dataset Ferrari', 'Data Narrative_Dataset MCG', 'Data Narrative_Dataset SelectiveSearch'}};
 nObjectDetectors = 4;
     
@@ -22,7 +22,7 @@ prop_res = {1.25, 1};
 formats = {'.JPG', '.jpg'};
 
 %%%%%%%%%%% RESULTING CROPS
-path_to_store = '/media/lifelogging/HDD_2TB/Object-Detection-CNN/';
+path_to_store = '/media/lifelogging/HDD_2TB/Object-Detection-CNN_Data/';
 % path_to_store = '/Volumes/SHARED HD/ODCNN_Data';
 path_crop_images = {'objDetectionCNN_train', 'objDetectionCNN_val'}; % resulting images train/test
 images_crop_lists_results = {'train_crop_list.txt', 'val_crop_list.txt'}; % croped images list train/test file names
