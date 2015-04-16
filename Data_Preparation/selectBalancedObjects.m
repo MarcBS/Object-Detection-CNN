@@ -1,9 +1,9 @@
 
 %% Define Parameters
 
-rebuild_train_val_split = false;
-min_object_OS = 0.5; % minimum overlapping score for considering an object sample
-max_noobject_OS = 0.5; % maximum overlapping score for considering a no object sample
+rebuild_train_val_split = true;
+min_object_OS = 0.7; % minimum overlapping score for considering an object sample
+max_noobject_OS = 0.2; % maximum overlapping score for considering a no object sample
 
 %%%%%%%%%%% IMAGES PARAMETERS
 classes = [0, 1]; % [No Object, Object]

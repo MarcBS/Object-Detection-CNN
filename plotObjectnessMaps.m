@@ -4,13 +4,15 @@ loadParameters;
 
 patches_per_scale = 5;
 
-% im_name = '104_0437.JPG';
-% im_name = '102_0260.JPG';
-% im_name = '108_0853.JPG';
-% im_name = '109_0903.JPG';
-im_name = '101_0123.JPG';
-set_id = '1'; % describes the set id assigned in the training/validation split (1=MSRC, 2=PASCAL)
-props = 1.25; % 1.25 MSRC, 1 PASCAL
+% im_name = '101_0123.JPG';
+% im_name = '104_0404.JPG';
+% im_name = '123_2393.JPG';
+% im_name = '2008_001350.jpg';
+im_name = '2009_000852.jpg';
+set_id = '2'; % describes the set id assigned in the training/validation split (1=MSRC, 2=PASCAL)
+props = 1; % 1.25 MSRC, 1 PASCAL
+% path_images = '/Volumes/SHARED HD/Video Summarization Project Data Sets/MSRC/JPEGImages';
+path_images = '/Volumes/SHARED HD/Video Summarization Project Data Sets/PASCAL_12/VOCdevkit/VOC2012/JPEGImages';
 
 img = imread([path_images '/' im_name]);
 img = imresize(img, [size(img,1)/props size(img,2)/props]);
