@@ -131,10 +131,10 @@ for i = 1:nTests
         
         % Insert object candidate information for each object found
         for k = 1:nWindows(i,j)
-            objects(j).objects(k).ULx = this_obj(k).ULx;
-            objects(j).objects(k).ULy = this_obj(k).ULy;
-            objects(j).objects(k).BRx = this_obj(k).BRx;
-            objects(j).objects(k).BRy = this_obj(k).BRy;
+            objects(j).objects(k).ULx = this_obj(k).ULx * objectsCV(j).resizeMaps;
+            objects(j).objects(k).ULy = this_obj(k).ULy * objectsCV(j).resizeMaps;
+            objects(j).objects(k).BRx = this_obj(k).BRx * objectsCV(j).resizeMaps;
+            objects(j).objects(k).BRy = this_obj(k).BRy * objectsCV(j).resizeMaps;
         end
     end
     

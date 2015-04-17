@@ -27,12 +27,17 @@ for img_ind = val_split'
     
     tic
 %     [ maps, objects ] = applyODCNN(img, ODCNN_params);
-    [ maps ] = applyODCNN(img, ODCNN_params, false);
+    [ maps_tests ] = applyODCNN(img, ODCNN_params, false);
     time = toc;
 
     disp(['Elapsed time: ' num2str(time)]);
     times(count_imgs) = time;
 
+    % Store resize applied on the image
+    maps.maps = maps_tests;
+    maps.resizeMaps = prop_res{img_ind(1)};
+    
+    % Save results
     save([path_maps '/' num2str(img_ind(1)) '_' objects(img_ind(2)).imgName '_maps.mat'], 'maps');
 %     save([path_maps '/' num2str(count_paths) '_' im_name{1} '_objects.mat'], 'objects');
 

@@ -23,7 +23,17 @@ ODCNN_params.stride = 24; % pixel separation between each processed patch
 ODCNN_params.input_patch = 256; % size of the input patch needed for the net
 ODCNN_params.patch_size = [100 100]; % size of the crops on the image
 ODCNN_params.patch_props = [[1 1]; [0.75 1]; [0.5 1]; [1 0.75]; [1 0.5]];
-ODCNN_params.scales = [1 0.85 0.71 0.51 0.36 0.21];
+FoodCNN_params.scales_sw_ratio = 1.35;
+FoodCNN_params.nScales = 6;
+
+% Automatically calculated
+FoodCNN_params.scales_sw = 0:FoodCNN_params.nScales-1;
+FoodCNN_params.scales_sw = FoodCNN_params.scales_sw_ratio.^FoodCNN_params.scales_sw;
+
+FoodCNN_params_scales_stride_ratio = 1/FoodCNN_params.scales_sw_ratio;
+FoodCNN_params.scales_stride = 0:FoodCNN_params.nScales-1;
+FoodCNN_params.scales_stride = FoodCNN_params.scales_sw_ratio.^FoodCNN_params.scales_stride;
+% FoodCNN_params.scales = [1 0.85 0.71 0.51 0.36 0.21]; % old ratios
 
 %% Paths to images
 path_maps = 'Maps';
@@ -45,7 +55,7 @@ path_objects = '/media/lifelogging/HDD_2TB/Video Summarization Objects/Features'
 list_paths_images = {'/media/lifelogging/Shared SSD/Object Discovery Data/Video Summarization Project Data Sets/MSRC/JPEGImages', ...
     '/media/lifelogging/Shared SSD/Object Discovery Data/Video Summarization Project Data Sets/PASCAL_12/VOCdevkit/VOC2012/JPEGImages'};
 
-% PASCAL 1, MSRC 1.25
+% MSRC 1.25, PASCAL 1
 prop_res = {1.25, 1};
 
 objects_folders = {'Data MSRC Ferrari', 'Data PASCAL_12 Ferrari'};

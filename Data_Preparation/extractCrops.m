@@ -16,7 +16,7 @@ path_images = '/media/lifelogging/Shared SSD/Object Discovery Data/Video Summari
 images_folders = {'MSRC', 'PASCAL_12/VOCdevkit/VOC2012'};
 %%% IMPORTANT!
 % proportion resolution for each dataset
-% PASCAL 1, MSRC 1.25
+% MSRC 1.25, PASCAL 1
 prop_res = {1.25, 1};
 
 formats = {'.JPG', '.jpg'};
@@ -97,7 +97,7 @@ for i_set = 1:2
         prev_dataset_name = dataset_name;
 %         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %         for out = 1:100
-%         line = fgetl(f);
+        line = fgetl(f);
 %         end
 %         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         count_lines = count_lines+1;

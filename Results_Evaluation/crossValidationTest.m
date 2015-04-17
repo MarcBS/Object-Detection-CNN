@@ -50,6 +50,9 @@ for img_ind = val_split'
     % Load maps results
     load([path_maps '/' num2str(img_ind(1)) '_' objects(img_ind(2)).imgName '_maps.mat']); % maps
     
+    objectsCV(count_imgs).resizeMaps = maps.resizeMaps;
+    maps = maps.maps;
+    
     %% For each mergeType
     count_type = 1;
     count_tests = 1;

@@ -5,25 +5,29 @@ loadParameters;
 patches_per_scale = 5;
 
 % im_name = '101_0123.JPG';
-% im_name = '104_0404.JPG';
+im_name = '104_0404.JPG';
 % im_name = '123_2393.JPG';
 % im_name = '2008_001350.jpg';
-im_name = '2009_000852.jpg';
-set_id = '2'; % describes the set id assigned in the training/validation split (1=MSRC, 2=PASCAL)
-props = 1; % 1.25 MSRC, 1 PASCAL
-% path_images = '/Volumes/SHARED HD/Video Summarization Project Data Sets/MSRC/JPEGImages';
-path_images = '/Volumes/SHARED HD/Video Summarization Project Data Sets/PASCAL_12/VOCdevkit/VOC2012/JPEGImages';
+% im_name = '2009_000852.jpg';
+set_id = '1'; % describes the set id assigned in the training/validation split (1=MSRC, 2=PASCAL)
+path_images = '/Volumes/SHARED HD/Video Summarization Project Data Sets/MSRC/JPEGImages';
+% path_images = '/Volumes/SHARED HD/Video Summarization Project Data Sets/PASCAL_12/VOCdevkit/VOC2012/JPEGImages';
 
-img = imread([path_images '/' im_name]);
-img = imresize(img, [size(img,1)/props size(img,2)/props]);
-ratio_general = size(img,1)/size(img,2);
-scale = [0 1];
-
+%% Load maps
 if(~isempty(set_id))
     im_name = [set_id '_' im_name];
 end
 load([path_maps '/' im_name '_maps.mat']); % maps
+props = maps.resizeMaps;
+maps = maps.maps;
 % load([path_maps '/' im_name '_objects.mat']); % objects
+
+%% Load image
+img = imread([path_images '/' im_name]);
+img = imresize(img, [size(img,1)/props size(img,2)/props]);
+
+ratio_general = size(img,1)/size(img,2);
+scale = [0 1];
 
 %% Generate objects list
 [objects_list, scales] = mergeWindows(maps, ODCNN_params);
