@@ -23,17 +23,17 @@ ODCNN_params.stride = 24; % pixel separation between each processed patch
 ODCNN_params.input_patch = 256; % size of the input patch needed for the net
 ODCNN_params.patch_size = [100 100]; % size of the crops on the image
 ODCNN_params.patch_props = [[1 1]; [0.75 1]; [0.5 1]; [1 0.75]; [1 0.5]];
-FoodCNN_params.scales_sw_ratio = 1.35;
-FoodCNN_params.nScales = 6;
+ODCNN_params.scales_sw_ratio = 1.35;
+ODCNN_params.scales_stride_ratio = 0.9;
+ODCNN_params.nScales = 6;
 
 % Automatically calculated
-FoodCNN_params.scales_sw = 0:FoodCNN_params.nScales-1;
-FoodCNN_params.scales_sw = FoodCNN_params.scales_sw_ratio.^FoodCNN_params.scales_sw;
+ODCNN_params.scales_sw = 0:ODCNN_params.nScales-1;
+ODCNN_params.scales_sw = ODCNN_params.scales_sw_ratio.^ODCNN_params.scales_sw;
 
-FoodCNN_params_scales_stride_ratio = 1/FoodCNN_params.scales_sw_ratio;
-FoodCNN_params.scales_stride = 0:FoodCNN_params.nScales-1;
-FoodCNN_params.scales_stride = FoodCNN_params.scales_sw_ratio.^FoodCNN_params.scales_stride;
-% FoodCNN_params.scales = [1 0.85 0.71 0.51 0.36 0.21]; % old ratios
+ODCNN_params.scales_stride = 0:ODCNN_params.nScales-1;
+ODCNN_params.scales_stride = ODCNN_params.scales_stride_ratio.^ODCNN_params.scales_stride;
+% ODCNN_params.scales = [1 0.85 0.71 0.51 0.36 0.21]; % old ratios
 
 %% Paths to images
 path_maps = 'Maps';

@@ -13,7 +13,7 @@ function [ maps ] = buildObjectnessMaps( img, NET_params )
     count_maps = 0;
 
     %% For each image scale
-    nImgScales = length(img_scales);
+    nImgScales = length(sw_scales);
     for nIS = 1:nImgScales
         
         % Instead of decreasing the size of the image --> lose of quality
