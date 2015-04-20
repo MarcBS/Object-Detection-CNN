@@ -19,10 +19,10 @@ loadParameters;
 %% Load validation data split
 load(train_val_split); % images_list
 val_split = images_list{2};
+nImages = size(val_split,1);
 
 
 %% For each image
-nImages = size(val_split,1);
 count_imgs = 1;
 prev_folder = '';
 objectsCV = struct('imgName', [], 'folder', []);
