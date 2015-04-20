@@ -18,7 +18,7 @@ ODCNN_params.parallel = true; % use parallel computation or not
 % 'IoU': intersection over union, 'NMS': non-maximal suppression, 'MS': match score
 ODCNN_params.mergeType = 'MS';
 ODCNN_params.minObjVal = 0.75; % minimum objectness value threshold to consider a positive window as an object
-ODCNN_params.mergeScales = true; % merge windows from different scales or not?
+ODCNN_params.mergeScales = true; % (DEPRECATED, always TRUE) merge windows from different scales or not?
 ODCNN_params.mergeThreshold = 0.45; % threshold used for any of the merging methods
 
 %%% Sliding window parameters
@@ -51,7 +51,8 @@ format = '.JPG';
 train_val_split = 'Data_Preparation/train_val_split.mat';
 
 % path_objects = '/Volumes/SHARED HD/Video Summarization Objects/Features';
-path_objects = '/media/lifelogging/HDD_2TB/Video Summarization Objects/Features';
+% path_objects = '/media/lifelogging/HDD_2TB/Video Summarization Objects/Features';
+path_objects = '/home/cvc/mbolanos/Objects_Structures';
 
 % list_paths_images = {'/Volumes/SHARED HD/Video Summarization Project Data Sets/MSRC/JPEGImages', ...
 %     '/Volumes/SHARED HD/Video Summarization Project Data Sets/PASCAL_12/VOCdevkit/VOC2012/JPEGImages'};
