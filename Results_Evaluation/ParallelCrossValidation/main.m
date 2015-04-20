@@ -21,12 +21,12 @@ cd ParallelCrossValidation
 
 %% Splits the image list for nProcesses
 nProcesses = round(nImages/images_per_process);
-split_images = round(linspace(1, length(val_split), nProcesses+1));
+split_images = round(linspace(0, length(val_split), nProcesses+1));
 
 %% Write submit file for putting processes in queue
 f = fopen('submit.sh','w');
 for i = 1:nProcesses
-    fprintf(f, command, split_images(i), split_images(i+1), i);
+    fprintf(f, command, split_images(i)+1, split_images(i+1), i);
 end
 fclose(f);
 

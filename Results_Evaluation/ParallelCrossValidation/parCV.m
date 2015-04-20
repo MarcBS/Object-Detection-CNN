@@ -17,40 +17,39 @@ function parCV( init_val_split, end_val_split, id_partition )
 
     disp(['Starting CV execution on partition ' num2str(id_partition)]);
     
+    %% Load test FOOD2 data split
+    disp('Loading ILSVRC2013 DET val objects file...');
+    load([FoodCNN_params.path_food2 '/' FoodCNN_params.train_test_food2{2} '/objects.mat']); % objects
+    load(FoodCNN_params.path_test_food2); % images_list_food2
+    images_list_food2 = images_list_food2{3};
+    
     %% Load validation data split
-    load(train_val_split); % images_list
-    val_split = images_list{2};
-    val_split = val_split(init_val_split:end_val_split);
-    nImages = size(val_split,1);
+    images_list_food2 = images_list_food2(init_val_split:end_val_split);
+    nImages = length(images_list_food2);
 
 
     %% For each image
     count_imgs = 1;
     prev_folder = '';
     objectsCV = struct('imgName', [], 'folder', []);
-    for img_ind = val_split'
+    for img_ind = images_list_food2
 
         disp(' ');
         disp(['## Processing image ' num2str(count_imgs) '/' num2str(nImages)]);
         disp(' ');
 
-        % Reload objects structure if we have changed the current folder
-        if(~strcmp(prev_folder, list_paths_images{img_ind(1)}))
-            prev_folder = list_paths_images{img_ind(1)};
-            load([path_objects '/' objects_folders{img_ind(1)} '/objects.mat']);
-        end
         tic
 
         % Store ground truth information
-        objectsCV(count_imgs).ground_truth = objects(img_ind(2)).ground_truth;
-        objectsCV(count_imgs).imgName = objects(img_ind(2)).imgName;
-        objectsCV(count_imgs).folder = objects(img_ind(2)).folder;
+        objectsCV(count_imgs).ground_truth = objects(img_ind).ground_truth;
+        objectsCV(count_imgs).imgName = objects(img_ind).imgName;
+        objectsCV(count_imgs).folder = objects(img_ind).folder;
 
         % Prepare tests parameters and resulting object candidates
         objectsCV(count_imgs).test = struct('mergeType', [], 'minObjVal', [], 'mergeScales', [], 'mergeThreshold', [], 'objects', []);
 
         % Load maps results
-        load([path_maps '/' num2str(img_ind(1)) '_' objects(img_ind(2)).imgName '_maps.mat']); % maps
+        load([path_maps '/' objects(img_ind).imgName '_maps.mat']); % maps
 
         objectsCV(count_imgs).resizeMaps = maps.resizeMaps;
         maps = maps.maps;
