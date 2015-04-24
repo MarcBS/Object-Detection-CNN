@@ -19,8 +19,8 @@ function parCV( init_val_split, end_val_split, id_partition )
     
     %% Load test FOOD2 data split
     disp('Loading ILSVRC2013 DET val objects file...');
-    load([FoodCNN_params.path_food2 '/' FoodCNN_params.train_test_food2{2} '/objects.mat']); % objects
-    load(FoodCNN_params.path_test_food2); % images_list_food2
+    load([ODCNN_params.path_food2 '/' ODCNN_params.train_test_food2{2} '/objects.mat']); % objects
+    load(ODCNN_params.path_test_food2); % images_list_food2
     images_list_food2 = images_list_food2{3};
     
     %% Load validation data split
