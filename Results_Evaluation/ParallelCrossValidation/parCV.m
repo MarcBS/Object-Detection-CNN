@@ -20,7 +20,7 @@ function parCV( init_val_split, end_val_split, id_partition )
     %% Load validation data split
     load(train_val_split); % images_list
     val_split = images_list{2};
-    val_split = val_split(init_val_split:end_val_split);
+    val_split = val_split(init_val_split:end_val_split,:);
     nImages = size(val_split,1);
 
 
