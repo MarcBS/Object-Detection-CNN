@@ -2,7 +2,7 @@ function parCV( init_val_split, end_val_split, id_partition )
 
     %% Specific Cross-Validation parameters
     mergeType_values = {'IoU', 'NMS', 'MS'};
-    minObjVal_values = {0.65, 0.75, 0.85};
+    minObjVal_values = {0.75, 0.85};
     mergeScales_values = {true};
     % Thresholds used for each of the methods (in the same order as
     % mergeType_values)

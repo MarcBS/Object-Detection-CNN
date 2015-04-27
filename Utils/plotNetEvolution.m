@@ -20,7 +20,8 @@
 % file_path = '../../../FoodCNN/Training_Results/output_training_finetunning_v2.txt';
 % file_path = '../../../FoodCNN/Training_Results/output_training_finetunning_v2_1.txt';
 %%% InformativeImagesDetectorCNN
-file_path = '../../../InformativeImagesDetector/Training_Results/output_training_finetunning_InformativeCNN_CV1_v1.txt';
+% file_path = '../../../InformativeImagesDetector/Training_Results/output_training_finetunning_InformativeCNN_CV1_v1.txt';
+file_path = '../../../InformativeImagesDetector/Training_Results/output_training_finetunning_InformativeCNN_CV1_v2.txt';
 
 % Only pick 1 sample for each N
 Nsubsample_loss = 5;
