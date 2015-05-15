@@ -21,17 +21,30 @@
 % file_path = '../../../FoodCNN/Training_Results/output_training_finetunning_v2_1.txt';
 %%% InformativeImagesDetectorCNN
 % file_path = '../../../InformativeImagesDetector/Training_Results/output_training_finetunning_InformativeCNN_CV1_v1.txt';
-file_path = '../../../InformativeImagesDetector/Training_Results/output_training_finetunning_InformativeCNN_CV1_v2.txt';
+% file_path = '../../../InformativeImagesDetector/Training_Results/output_training_finetunning_InformativeCNN_CV1_v2.txt';
+% file_path = '../../../InformativeImagesDetector/Training_Results/output_training_finetunning_HybridPlaces_InformativeCNN_CV1_v1.txt';
+% file_path = '../../../InformativeImagesDetector/Training_Results/output_training_finetunning_InformativeCNN_CV2_v1.txt';
+% file_path = '../../../InformativeImagesDetector/Training_Results/output_training_finetunning_InformativeCNN_CV3_v1.txt';
+% file_path = '../../../InformativeImagesDetector/Training_Results/output_training_finetunning_InformativeCNN_CV4_v1.txt';
+%%% MNIST Test
+% file_path = '../../../MNIST_tests/Training_Results/output_training_v1.txt';
+% file_path = '../../../MNIST_tests/Training_Results/output_training_mod_v1.txt';
+% file_path = '../../../MNIST_tests/Training_Results/output_training_mod_v2.txt';
+% file_path = '../../../MNIST_tests/Training_Results/output_training_mod_v2_2-layers.txt';
+file_path = '../../../MNIST_tests/Training_Results/output_training_mod_v2_4-layers.txt';
+
+% last_layer_name = 'accuracy';
+last_layer_name = 'prob';
 
 % Only pick 1 sample for each N
-Nsubsample_loss = 5;
+Nsubsample_loss = 1;
 % Nsubsample_loss = 5;
-Nsubsample_axis = 50;
+Nsubsample_axis = 5;
 % Nsubsample_axis = 50;
 Nsubsample_accuracy = 1;
 
-data_plotted = {'Training loss', 'Test loss', 'Test accuracy'};
-colours = {'k', 'b', 'g'};
+data_plotted = {'Training loss', 'Test loss', 'Test accuracy', 'Max Accuracy'};
+colours = {'k', 'b', 'g', 'r'};
 lines_width = 2;
 
 %% Read file
@@ -68,14 +81,14 @@ end
 accuracy = [];
 loss_test = [];
 accuracy_loss_iter = [];
-find_accuracy = regexp(data, 'Test net output #0: accuracy = ', 'split');
+find_accuracy = regexp(data, ['Test net output #.: ' last_layer_name ' = '], 'split');
 nSplits = length(find_accuracy);
 for i = 2:nSplits
     this_accuracy = regexp(find_accuracy{i}, '\n', 'split');
     accuracy = [accuracy str2num(this_accuracy{1})];
 end
 
-find_loss_test = regexp(data, 'Test net output #1: loss = ', 'split');
+find_loss_test = regexp(data, 'Test net output #.: loss = ', 'split');
 nSplits = length(find_loss_test);
 for i = 2:nSplits
     this_loss_test = regexp(find_loss_test{i}, ' ', 'split');
@@ -95,6 +108,9 @@ plot(loss_iter(1:Nsubsample_loss:end), loss(1:Nsubsample_loss:end), 'Color', col
 %% Plot accuracy progress
 plot(accuracy_loss_iter(1:Nsubsample_accuracy:end), loss_test(1:Nsubsample_accuracy:end), 'Color', colours{2}, 'LineWidth', lines_width);
 plot(accuracy_loss_iter(1:Nsubsample_accuracy:end), accuracy(1:Nsubsample_accuracy:end), 'Color', colours{3}, 'LineWidth', lines_width);
+
+%% Plot max accuracy horizontal line
+plot([0 loss_iter(end)], [1 1], 'Color', colours{4}, 'LineWidth', lines_width);
 
 %% Plot max accuracy and min test loss
 [val, pos] = max(accuracy);

@@ -1,10 +1,10 @@
-function [ obj_windows, scales ] = mergeWindowsCV( maps, ODCNN_params, params )
+function [ obj_windows, scales ] = mergeWindowsCV( maps, Net_params, params )
 %MERGEWINDOWS It merges the detected object windows from each different
 %   scale if their IoU is big enough.
 
     obj_windows = {};
-    min_confidence = ODCNN_params.minObjVal;
-    merge_scales = ODCNN_params.mergeScales;
+    min_confidence = Net_params.minObjVal;
+    merge_scales = Net_params.mergeScales;
 
         
     %% Sort maps by image scales
@@ -46,26 +46,27 @@ function [ obj_windows, scales ] = mergeWindowsCV( maps, ODCNN_params, params )
             % For each parameter in the Cross-Validation
             initW = W;
             for nParams = 1:length(params)
-                if(nParams > 1 && ~strcmp(ODCNN_params.mergeType, 'NMS'))
+                if(nParams > 1 && ~strcmp(Net_params.mergeType, 'NMS'))
                     W = obj_windows{nParams-1}{i};
                 else
                     W = initW;
                 end
-                ODCNN_params.mergeThreshold = params{nParams};
+                Net_params.mergeThreshold = params{nParams};
 
-                if(strcmp(ODCNN_params.mergeType, 'IoU'))
+                if(strcmp(Net_params.mergeType, 'IoU'))
                     % Keep merging while there are enough similar windows
                     nW = Inf;
+                    d = [];
                     while(nW > size(W,1))
                         nW = size(W,1);
-                        W = mergeBestIOU(W, ODCNN_params);
+                        [W, d] = mergeBestIOU(W, Net_params.mergeThreshold, d);
                     end
-                elseif(strcmp(ODCNN_params.mergeType, 'NMS'))
-                    W = nms(W, ODCNN_params.mergeThreshold);
-                elseif(strcmp(ODCNN_params.mergeType, 'MS'))
+                elseif(strcmp(Net_params.mergeType, 'NMS'))
+                    W = nms(W, Net_params.mergeThreshold);
+                elseif(strcmp(Net_params.mergeType, 'MS'))
                     this_scale = regexp(scales{i}, '_', 'split');
                     this_scale = [str2num(this_scale{1}) str2num(this_scale{2})];
-                    W = matchScoring(W, ODCNN_params.mergeThreshold, this_scale);
+                    W = matchScoring(W, Net_params.mergeThreshold, this_scale);
                 end
                 obj_windows{nParams}{i} = W;
                 
@@ -98,24 +99,25 @@ function [ obj_windows, scales ] = mergeWindowsCV( maps, ODCNN_params, params )
         % For each parameter in the Cross-Validation
         initW = W;
         for nParams = 1:length(params)
-            if(nParams > 1 && ~strcmp(ODCNN_params.mergeType, 'NMS'))
+            if(nParams > 1 && ~strcmp(Net_params.mergeType, 'NMS'))
                 W = obj_windows{nParams-1}{bigger_scale_ind};
             else
                 W = initW;
             end
-            ODCNN_params.mergeThreshold = params{nParams};
+            Net_params.mergeThreshold = params{nParams};
         
-            if(strcmp(ODCNN_params.mergeType, 'IoU'))
+            if(strcmp(Net_params.mergeType, 'IoU'))
                 % Keep merging while there are enough similar windows
                 nW = Inf;
+                d = [];
                 while(nW > size(W,1))
                     nW = size(W,1);
-                    W = mergeBestIOU(W, ODCNN_params);
+                    [W, d] = mergeBestIOU(W, Net_params.mergeThreshold, d);
                 end
-            elseif(strcmp(ODCNN_params.mergeType, 'NMS'))
-                W = nms(W, ODCNN_params.mergeThreshold);
-            elseif(strcmp(ODCNN_params.mergeType, 'MS'))
-                W = matchScoring(W, ODCNN_params.mergeThreshold, bigger_scale);   
+            elseif(strcmp(Net_params.mergeType, 'NMS'))
+                W = nms(W, Net_params.mergeThreshold);
+            elseif(strcmp(Net_params.mergeType, 'MS'))
+                W = matchScoring(W, Net_params.mergeThreshold, bigger_scale);   
             end
             obj_windows{nParams}{bigger_scale_ind} = W;
         end

@@ -16,7 +16,7 @@ function [ windows ] = matchScoring( windows, threshold, img_size )
     d = d+eye(nWindows);
     [v, p] = min(d);
     [v2, p2] = min(v);
-    
+
     % Only keep merging if their Match_Score <= threshold
     while(size(win_aux,1) > 1 && v2 <= threshold)
         w1 = win_aux(p(p2),:);
@@ -29,12 +29,17 @@ function [ windows ] = matchScoring( windows, threshold, img_size )
         win_aux(p(p2),:) = [];
         win_aux(p2,:) = [];
 
-        % Insert merged window
+        % Remove old windows' distances
+        d([p(p2) p2],:) = [];
+        d(:,[p(p2) p2]) = [];
+        
+        % Calculate distances to new window and insert
+        d_new = pdist2(w_new, win_aux, @matchScore);
+        d(:,end+1) = d_new';
+        d(end+1,:) = [d_new 1];
         win_aux(end+1,:) = w_new;
         
         % Get windows with lower match score (most similar)
-        d = squareform(pdist(win_aux, @matchScore));
-        d = d+eye(size(win_aux,1));
         [v, p] = min(d);
         [v2, p2] = min(v);
     end

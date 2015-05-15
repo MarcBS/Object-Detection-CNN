@@ -45,9 +45,10 @@ function [ obj_windows, scales ] = mergeWindows( maps, ODCNN_params )
             if(strcmp(ODCNN_params.mergeType, 'IoU'))
                 % Keep merging while there are enough similar windows
                 nW = Inf;
+                d = [];
                 while(nW > size(W,1))
                     nW = size(W,1);
-                    W = mergeBestIOU(W, ODCNN_params);
+                    [W, d] = mergeBestIOU(W, ODCNN_params.mergeThreshold, d);
                 end
             elseif(strcmp(ODCNN_params.mergeType, 'NMS'))
                 W = nms(W, ODCNN_params.mergeThreshold);
@@ -85,9 +86,10 @@ function [ obj_windows, scales ] = mergeWindows( maps, ODCNN_params )
         if(strcmp(ODCNN_params.mergeType, 'IoU'))
             % Keep merging while there are enough similar windows
             nW = Inf;
+            d = [];
             while(nW > size(W,1))
                 nW = size(W,1);
-                W = mergeBestIOU(W, ODCNN_params);
+                [W, d] = mergeBestIOU(W, ODCNN_params.mergeThreshold, d);
             end
         elseif(strcmp(ODCNN_params.mergeType, 'NMS'))
             W = nms(W, ODCNN_params.mergeThreshold);

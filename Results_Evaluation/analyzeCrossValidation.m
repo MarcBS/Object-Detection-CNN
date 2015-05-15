@@ -75,7 +75,7 @@ for i = 1:nTests
     
     pos_mth = find(ismember(mergeThreshold_values{pos_mty}, mth));
     if(isempty(pos_mth))
-        mergeThreshold_values{pos_mty} = {mergeThreshfeat_old_values{pos_mty}{:}, mth};
+        mergeThreshold_values{pos_mty} = {mergeThreshold_values{pos_mty}{:}, mth};
         pos_mth = length(mergeThreshold_values{pos_mty});
     end
     
@@ -170,7 +170,7 @@ Results.avrgWindows = mean(nWindows, 2);
 Results.stdWindows = std(nWindows, [], 2);
 Results.PR_curve = all_PR_curve;
 Results.AP = all_AP;
-results.MAP = mean(all_AP, 2);
+Results.MAP = mean(all_AP, 2);
 Results.AUC = all_AUC;
 
 save('Results.mat', 'Results');
