@@ -16,8 +16,7 @@ function [ W, d ] = mergeBestIOU( W, mergeThreshold, d )
         w_new = mean([w1; w2]);
 
         % Remove old windows
-        W(p(p2),:) = [];
-        W(p2,:) = [];
+        W([p(p2), p2],:) = [];
         
         % Remove old windows' distances
         d([p(p2) p2],:) = [];
@@ -26,7 +25,7 @@ function [ W, d ] = mergeBestIOU( W, mergeThreshold, d )
         % Calculate distances to new window and insert
         d_new = pdist2(w_new, W, @IOU);
         d(:,end+1) = d_new';
-        d(end+1,:) = [d_new 1];
+        d(end+1,:) = [d_new 0];
         W(end+1,:) = w_new;
     end
     

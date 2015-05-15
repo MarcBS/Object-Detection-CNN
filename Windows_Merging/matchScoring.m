@@ -26,8 +26,7 @@ function [ windows ] = matchScoring( windows, threshold, img_size )
         w_new = [mean([w1(1:4); w2(1:4)]) max_dist max_intersect];
 
         % Remove old windows
-        win_aux(p(p2),:) = [];
-        win_aux(p2,:) = [];
+        win_aux([p(p2) p2],:) = [];
 
         % Remove old windows' distances
         d([p(p2) p2],:) = [];
