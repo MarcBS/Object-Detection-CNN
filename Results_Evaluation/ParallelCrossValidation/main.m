@@ -4,7 +4,7 @@
 %   margin method.
 
 images_per_process = 20;
-command = 'qsub -q long.q -l mem=2M -cwd -v INI=%d,FIN=%d,ID_PROCESS=%d objDetectCV.sh\n';
+command = 'qsub -q medium.q -l mem=2M -cwd -v INI=%d,FIN=%d,ID_PROCESS=%d objDetectCV.sh\n';
 
 %% Load Parameters
 cd ..
