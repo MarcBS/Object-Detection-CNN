@@ -1,8 +1,9 @@
-function [ obj_windows, scales ] = mergeWindowsCV( maps, Net_params, params )
+function [ obj_windows, conf_windows, scales ] = mergeWindowsCV( maps, Net_params, params )
 %MERGEWINDOWS It merges the detected object windows from each different
 %   scale if their IoU is big enough.
 
     obj_windows = {};
+    conf_windows = {};
     min_confidence = Net_params.minObjVal;
     merge_scales = Net_params.mergeScales;
 
@@ -36,10 +37,13 @@ function [ obj_windows, scales ] = mergeWindowsCV( maps, Net_params, params )
         for i = 1:nScales
             this_ind = indScales{i};
             W = [];
+            W_conf = [];
             for ind = this_ind'
                 if(maps(ind).nWindows > 0)
                     this_windows = maps(ind).windows(maps(ind).confidence >= min_confidence,:);
+                    this_confidences = maps(ind).confidence(maps(ind).confidence >= min_confidence);
                     W = [W; this_windows];
+                    W_conf = [W_conf this_confidences];
                 end
             end
 
@@ -59,17 +63,17 @@ function [ obj_windows, scales ] = mergeWindowsCV( maps, Net_params, params )
                     d = [];
                     while(nW > size(W,1))
                         nW = size(W,1);
-                        [W, d] = mergeBestIOU(W, Net_params.mergeThreshold, d);
+                        [W, W_conf, d] = mergeBestIOU(W, W_conf, Net_params.mergeThreshold, d);
                     end
                 elseif(strcmp(Net_params.mergeType, 'NMS'))
-                    W = nms(W, Net_params.mergeThreshold);
+                    [W, W_conf] = nms(W, W_conf, Net_params.mergeThreshold);
                 elseif(strcmp(Net_params.mergeType, 'MS'))
                     this_scale = regexp(scales{i}, '_', 'split');
                     this_scale = [str2num(this_scale{1}) str2num(this_scale{2})];
-                    W = matchScoring(W, Net_params.mergeThreshold, this_scale);
+                    [W, W_conf] = matchScoring(W, W_conf, Net_params.mergeThreshold, this_scale);
                 end
                 obj_windows{nParams}{i} = W;
-                
+                conf_windows{nParams}{i} = W_conf;
             end
         end
 
@@ -77,6 +81,7 @@ function [ obj_windows, scales ] = mergeWindowsCV( maps, Net_params, params )
         %% Get all windows resized to the bigger scale
         nScales = length(scales);
         W = [];
+        W_conf = [];
         bigger_scale = scales{bigger_scale_ind};
         bigger_scale = regexp(bigger_scale, '_', 'split');
         bigger_scale = [str2num(bigger_scale{1}) str2num(bigger_scale{2})];
@@ -91,7 +96,9 @@ function [ obj_windows, scales ] = mergeWindowsCV( maps, Net_params, params )
             for ind = this_ind'
                 if(maps(ind).nWindows > 0)
                     this_windows = maps(ind).windows(maps(ind).confidence >= min_confidence,:);
+                    this_confidences = maps(ind).confidence(maps(ind).confidence >= min_confidence);
                     W = [W; this_windows*ratio];
+                    W_conf = [W_conf this_confidences];
                 end
             end
         end
@@ -112,14 +119,15 @@ function [ obj_windows, scales ] = mergeWindowsCV( maps, Net_params, params )
                 d = [];
                 while(nW > size(W,1))
                     nW = size(W,1);
-                    [W, d] = mergeBestIOU(W, Net_params.mergeThreshold, d);
+                    [W, W_conf, d] = mergeBestIOU(W, W_conf, Net_params.mergeThreshold, d);
                 end
             elseif(strcmp(Net_params.mergeType, 'NMS'))
-                W = nms(W, Net_params.mergeThreshold);
+                [W, W_conf] = nms(W, W_conf, Net_params.mergeThreshold);
             elseif(strcmp(Net_params.mergeType, 'MS'))
-                W = matchScoring(W, Net_params.mergeThreshold, bigger_scale);   
+                [W, W_conf] = matchScoring(W, W_conf, Net_params.mergeThreshold, bigger_scale);   
             end
             obj_windows{nParams}{bigger_scale_ind} = W;
+            conf_windows{nParams}{bigger_scale_ind} = W_conf;
         end
 
     end

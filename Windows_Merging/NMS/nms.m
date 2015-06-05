@@ -1,9 +1,11 @@
-function top = nms(boxes, overlap)
+function [top, top_confidences] = nms(boxes, confidences, overlap)
 
 % top = nms(boxes, overlap) 
 % Non-maximum suppression.
 % Greedily select high-scoring detections and skip detections
 % that are significantly covered by a previously selected detection.
+
+boxes = [boxes; confidences'];
 
 if isempty(boxes)
   top = [];
@@ -41,4 +43,5 @@ else
     I(suppress) = [];
   end  
   top = boxes(pick,:);
+  top_confidences = confidences(pick);
 end

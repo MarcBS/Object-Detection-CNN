@@ -2,13 +2,13 @@ function parCV( init_val_split, end_val_split, id_partition )
 
     %% Specific Cross-Validation parameters
     mergeType_values = {'IoU', 'NMS', 'MS'};
-    minObjVal_values = {0.75, 0.85};
+    minObjVal_values = {0.75, 0.85, 0.95};
     mergeScales_values = {true};
     % Thresholds used for each of the methods (in the same order as
     % mergeType_values)
-    mergeThreshold_values = {{0.8, 0.65, 0.5, 0.35, 0.2}, ...
-                            {0.8, 0.65, 0.5, 0.35, 0.2}, ...
-                            {0.3, 0.4, 0.45, 0.5, 0.55}};
+    mergeThreshold_values = {{0.8, 0.65, 0.5}, ...
+                            {0.8, 0.65, 0.5}, ...
+                            {0.2, 0.3, 0.4}};
 
     %% Load general Parameters
     cd ..
@@ -68,7 +68,7 @@ function parCV( init_val_split, end_val_split, id_partition )
                     ODCNN_params.mergeScales = mergeScales{1};
 
                     %% Apply tests for all the chosen thresholds
-                    [objects_list, scales] = mergeWindowsCV(maps, ODCNN_params, mergeThreshold_values{count_type});
+                    [objects_list, conf_windows, scales] = mergeWindowsCV(maps, ODCNN_params, mergeThreshold_values{count_type});
                     this_all_objects.list = objects_list;
                     this_objects.scales = scales;
 
@@ -106,15 +106,19 @@ function parCV( init_val_split, end_val_split, id_partition )
                             s = regexp(this_objects.scales{i}, '_', 'split');
                             s = [str2num(s{1}) str2num(s{2})];
                             objs = this_objects.list{i};
+                            confs = conf_windows{i}{1};
 
                             ratio = maxScale_val(2)/s(2);
+                            count_o = 1;
                             for o = objs'
                                 o = o*ratio;
                                 objectsCV(count_imgs).test(count_tests).objects(count_objects).ULx = o(1);
                                 objectsCV(count_imgs).test(count_tests).objects(count_objects).ULy = o(2);
                                 objectsCV(count_imgs).test(count_tests).objects(count_objects).BRx = o(3);
                                 objectsCV(count_imgs).test(count_tests).objects(count_objects).BRy = o(4);
+                                objectsCV(count_imgs).test(count_tests).objects(count_objects).confidence = confs(count_o);
                                 count_objects = count_objects+1;
+                                count_o = count_o + 1;
                             end
                         end
 

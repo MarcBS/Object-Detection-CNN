@@ -16,9 +16,9 @@
 %                                   test parameters and IoU GT evaluation metrics
 % - recall [nTests x I]:            recall obtained on all the possible
 %                                   test parameters and IoU GT evaluation metrics
-% - PR_curve [nTests x I]:          precision-recall curve for the first 0:0.05:1 
+% - PR_curve [nTests x 101]:        precision-recall curve for the first 0:0.01:1 
 %                                   percentage of samples
-% - AP [nTests x I]:                average precision
+% - AP [nTests x 11]:               average precision from 0 to 1 (0:0.1:1)
 % - MAP [nTests]:                   mean average precision
 % - AUC [nTests]:                   area under curve (recall-IoU curve)
 % - IoU_values [I]:                 intersection over union GT evaluation metrics
@@ -29,14 +29,18 @@
 
 %% Parameters
 
-file = '/media/lifelogging/HDD_2TB/Object-Detection-CNN/tmp_cv_results/tmp_state_1100.mat';
+file = '/media/lifelogging/HDD_2TB/Object-Detection-CNN/tmp_cv_results';
+% file = '/media/lifelogging/Shared SSD/food_tmp_cv_results';
+
+% file = '/Volumes/SHARED HD/FoodCNN/tmp_cv_results';
 % file = 'CrossValidation_validation_set.mat'; % objectsCV
+
 IoU_values = 0.5:0.05:1;
 
 
 %% Load CV results
-disp('Loading CV data file...');
-load(file);
+% disp('Loading CV data file...');
+[objectsCV, files_list] = loadCV(file);
 
 %% Prepare data structure to store results
 Results = struct('mergeType_values', [], 'minObjVal_values', [], ...
@@ -75,6 +79,7 @@ for i = 1:nTests
     
     pos_mth = find(ismember(mergeThreshold_values{pos_mty}, mth));
     if(isempty(pos_mth))
+%         mergeThreshold_values{pos_mty} = {mergeThreshfeat_old_values{pos_mty}{:}, mth};
         mergeThreshold_values{pos_mty} = {mergeThreshold_values{pos_mty}{:}, mth};
         pos_mth = length(mergeThreshold_values{pos_mty});
     end
@@ -95,7 +100,8 @@ nSamples = length(objectsCV);
 nIoU = length(IoU_values);
 precision = zeros(nTests, nIoU);
 recall = zeros(nTests, nIoU);
-nWindows = zeros(nTests, nSamples);
+% nWindows = zeros(nTests, nSamples);
+nWindows = [];
 all_PR_curve = struct('precision', [], 'recall', []);
 all_AP = zeros(nTests, nIoU);
 all_AUC = zeros(nTests, 1);
@@ -107,57 +113,70 @@ for i = 1:nTests
     % Create empty objects structure
     objects = struct('imgName', [], 'folder', [], 'ground_truth', [], 'objects', []);
     
-    %% Get info from each sample
-    for j = 1:nSamples
+    %% Load each CV file part
+    nFiles = length(files_list);
+    offset = 0;
+    for nF = 1:nFiles
+        disp(['Reading file ' files_list(nF).name]);
+        load([file '/' files_list(nF).name]); % objectsCV
+        nSamples = length(objectsCV);
         
-        objects(j).imgName = objectsCV(j).imgName;
-        objects(j).folder = objectsCV(j).folder;
-        nGT = length(objectsCV(j).ground_truth);
-        nFound = 0;
-        for k = 1:nGT
-            if(~isempty(objectsCV(j).ground_truth(k).name))
-                nFound = nFound+1;
-                objects(j).ground_truth(nFound).name = objectsCV(j).ground_truth(k).name;
-                objects(j).ground_truth(nFound).ULx = objectsCV(j).ground_truth(k).ULx;
-                objects(j).ground_truth(nFound).ULy = objectsCV(j).ground_truth(k).ULy;
-                objects(j).ground_truth(nFound).BRx = objectsCV(j).ground_truth(k).BRx;
-                objects(j).ground_truth(nFound).BRy = objectsCV(j).ground_truth(k).BRy;
+        %% Get info from each sample
+        for j = 1:nSamples
+
+            objects(j+offset).imgName = objectsCV(j).imgName;
+            objects(j+offset).folder = objectsCV(j).folder;
+            nGT = length(objectsCV(j).ground_truth);
+            nFound = 0;
+            for k = 1:nGT
+                if(~isempty(objectsCV(j).ground_truth(k).name))
+                    nFound = nFound+1;
+                    objects(j+offset).ground_truth(nFound).name = objectsCV(j).ground_truth(k).name;
+                    objects(j+offset).ground_truth(nFound).ULx = objectsCV(j).ground_truth(k).ULx;
+                    objects(j+offset).ground_truth(nFound).ULy = objectsCV(j).ground_truth(k).ULy;
+                    objects(j+offset).ground_truth(nFound).BRx = objectsCV(j).ground_truth(k).BRx;
+                    objects(j+offset).ground_truth(nFound).BRy = objectsCV(j).ground_truth(k).BRy;
+                end
+            end
+
+            this_obj = objectsCV(j).test(i).objects;
+
+            nWindows(i,j+offset) = length(this_obj);
+
+            % Insert object candidate information for each object found
+            for k = 1:nWindows(i,j+offset)
+                objects(j+offset).objects(k).ULx = this_obj(k).ULx * objectsCV(j).resizeMaps;
+                objects(j+offset).objects(k).ULy = this_obj(k).ULy * objectsCV(j).resizeMaps;
+                objects(j+offset).objects(k).BRx = this_obj(k).BRx * objectsCV(j).resizeMaps;
+                objects(j+offset).objects(k).BRy = this_obj(k).BRy * objectsCV(j).resizeMaps;
+                objects(j+offset).objects(k).confidence = this_obj(k).confidence;
             end
         end
+
+        offset = offset + nSamples;
+    end    
         
-        this_obj = objectsCV(j).test(i).objects;
-        
-        nWindows(i,j) = length(this_obj);
-        
-        % Insert object candidate information for each object found
-        for k = 1:nWindows(i,j)
-            objects(j).objects(k).ULx = this_obj(k).ULx * objectsCV(j).resizeMaps;
-            objects(j).objects(k).ULy = this_obj(k).ULy * objectsCV(j).resizeMaps;
-            objects(j).objects(k).BRx = this_obj(k).BRx * objectsCV(j).resizeMaps;
-            objects(j).objects(k).BRy = this_obj(k).BRy * objectsCV(j).resizeMaps;
-        end
-    end
-    
     %% Evaluate for each IoU value
     for j = 1:nIoU
         disp(['  IoU = ' num2str(IoU_values(j))]);
         objectsTMP = objects;
-        
+
         % Analyze objects found w.r.t. the GT
         disp('    Building GT...');
         objectsTMP = buildGroundTruth(objectsTMP, IoU_values(j));
-        
+
         % Evaluate result for each IoU value
         disp('    Evaluating results for any IoU value...');
-        [precision(i,j), recall(i,j), PR_curve] = evaluateODCNN(objectsTMP);
-        
+        [precision(i,j), recall(i,j), PR_curve] = evaluateDetectionCNN(objectsTMP);
+
 %         plot(PR_curve.recall, PR_curve.precision);
         AP = VOCap(PR_curve.recall', PR_curve.precision');
-        
+
         all_PR_curve(i,j).precision = PR_curve.precision;
         all_PR_curve(i,j).recall = PR_curve.recall;
         all_AP(i,j) = AP;
     end
+        
     all_AUC(i) = VOCap(IoU_values', recall(i,:)');
 end
 
@@ -175,3 +194,4 @@ Results.AUC = all_AUC;
 
 save('Results.mat', 'Results');
 disp('Done');
+exit;

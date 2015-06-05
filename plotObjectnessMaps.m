@@ -28,7 +28,7 @@ ratio_general = size(img,1)/size(img,2);
 scale = [0 1];
 
 %% Generate objects list
-[objects_list, scales] = mergeWindows(maps, ODCNN_params);
+[objects_list, ~, scales] = mergeWindows(maps, ODCNN_params);
 objects.list = objects_list;
 objects.scales = scales;
 
