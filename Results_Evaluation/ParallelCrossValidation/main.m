@@ -3,8 +3,8 @@
 %   validation data for selecting the best parameter combination for each 
 %   margin method.
 
-images_per_process = 20;
-command = 'qsub -q medium.q -l mem=2M -cwd -v INI=%d,FIN=%d,ID_PROCESS=%d objDetectCV.sh\n';
+images_per_process = 5;
+command = 'qsub -q short.q -l mem=2M -cwd -v INI=%d,FIN=%d,ID_PROCESS=%d objDetectCV.sh\n';
 
 %% Load Parameters
 cd ..

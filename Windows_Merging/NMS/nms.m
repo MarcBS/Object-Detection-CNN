@@ -5,8 +5,6 @@ function [top, top_confidences] = nms(boxes, confidences, overlap)
 % Greedily select high-scoring detections and skip detections
 % that are significantly covered by a previously selected detection.
 
-boxes = [boxes; confidences'];
-
 if isempty(boxes)
   top = [];
 else
@@ -14,7 +12,7 @@ else
   y1 = boxes(:,2);
   x2 = boxes(:,3);
   y2 = boxes(:,4);
-  s = boxes(:,end);
+  s = confidences';
   area = (x2-x1+1) .* (y2-y1+1);
 
   [vals, I] = sort(s);
