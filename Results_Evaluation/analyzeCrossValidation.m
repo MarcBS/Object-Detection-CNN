@@ -28,19 +28,15 @@
 %%%%%%%%%%%%%
 
 %% Parameters
-
-file = '/media/lifelogging/HDD_2TB/Object-Detection-CNN/tmp_cv_results';
+% file = '/media/lifelogging/HDD_2TB/FoodCNN/tmp_cv_results';
 % file = '/media/lifelogging/Shared SSD/food_tmp_cv_results';
-
-% file = '/Volumes/SHARED HD/FoodCNN/tmp_cv_results';
-% file = 'CrossValidation_validation_set.mat'; % objectsCV
+file = '/Volumes/SHARED HD/FoodCNN/tmp_cv_results';
 
 IoU_values = 0.5:0.05:1;
 
 
 %% Load CV results
-% disp('Loading CV data file...');
-[objectsCV, files_list] = loadCV(file);
+[objectsCV, files_list] = loadCV(file); % objectsCV
 
 %% Prepare data structure to store results
 Results = struct('mergeType_values', [], 'minObjVal_values', [], ...
@@ -157,17 +153,17 @@ for i = 1:nTests
     end    
         
     %% Evaluate for each IoU value
+    objectsTMP = objects;
     for j = 1:nIoU
         disp(['  IoU = ' num2str(IoU_values(j))]);
-        objectsTMP = objects;
 
         % Analyze objects found w.r.t. the GT
         disp('    Building GT...');
-        objectsTMP = buildGroundTruth(objectsTMP, IoU_values(j));
+        [objectsTMP, nElems] = buildGroundTruth(objectsTMP, IoU_values(j), j == 1); % only rebuild from scratch with j == 1
 
         % Evaluate result for each IoU value
-        disp('    Evaluating results for any IoU value...');
-        [precision(i,j), recall(i,j), PR_curve] = evaluateDetectionCNN(objectsTMP);
+        disp('    Evaluating results for any Confidence value...');
+        [precision(i,j), recall(i,j), PR_curve] = evaluateDetectionCNN(objectsTMP, nElems);
 
 %         plot(PR_curve.recall, PR_curve.precision);
         AP = VOCap(PR_curve.recall', PR_curve.precision');

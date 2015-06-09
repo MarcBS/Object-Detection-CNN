@@ -1,4 +1,4 @@
-function [ precision, recall, PR_curve ] = evaluateDetectionCNN( objects )
+function [ precision, recall, PR_curve ] = evaluateDetectionCNN( objects, nElems )
 %EVALUATEODCNN Evaluates the result obtained by the ObjectDetector-CNN
 % w.r.t. a given intersection over union (IoU) value.
     
@@ -6,7 +6,7 @@ function [ precision, recall, PR_curve ] = evaluateDetectionCNN( objects )
 
     
     %% Get labels and scores for each TP sample
-    [ all_TPs, all_FPs, TP_, FP_ ] = getTPs(objects);
+    [ all_TPs, all_FPs, TP_, FP_ ] = getTPs(objects, nElems);
     
     %% Only continue if we have any detection
     nDetections = TP_+FP_;
